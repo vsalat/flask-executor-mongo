@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+
+  executer-web:
+    restart: always
+    image: flask-executor-web-local
+    build:
+      context: .
+      dockerfile: docker/local/Dockerfile-web
+    env_file:
+      - .env
+
+  executer-celery:
+    restart: always
+    image: flask-executor-celery-local
+    build:
+      context: .
+      dockerfile: docker/local/Dockerfile-celery
+    env_file:
+      - .env
+
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass sOmE_sEcUrE_pAsS
+    ports:
+      - "6379:6379"

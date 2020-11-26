@@ -1,0 +1,7 @@
+TASK_CREATED = 0
+TASK_COMPLETED = 1
+
+DEFAULT_TASK_BODY = dict(
+    status=TASK_CREATED,
+    output=None
+)

@@ -1,0 +1,15 @@
+FROM python:3.9-alpine
+RUN adduser -D executor
+WORKDIR /home/executor
+
+COPY requirements.txt requirements.txt
+RUN python -m venv venv
+RUN venv/bin/pip install -r requirements.txt
+RUN venv/bin/pip install gunicorn
+
+COPY src/ .
+COPY docker/local/boot.sh .
+RUN chmod +x web.sh
+RUN chown -R executor:executor ./
+USER executor
+ENTRYPOINT ["./web.sh"]
